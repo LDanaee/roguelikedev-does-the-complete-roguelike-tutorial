@@ -3,19 +3,11 @@ from input_handlers import handle_keys
 from entity import Entity
 from render_function import render_all, clear_all
 from map_objects.game_map import GameMap
+from map_objects.mapstartingconfig import mapconfig
 
 #fonction main Check if the module is ran as main program (name devient main).
 #Si ce fichier est importé d'un autre module, name sera le nom du module
 def main():
-#Carac de l'écran
-    screen_width = 80
-    screen_height = 50
-    map_width = 80
-    map_height = 45
-#Minimum de la room
-    room_max_size = 15
-    room_min_size = 6
-    max_rooms = 30
 
 
     colors = {
@@ -24,18 +16,18 @@ def main():
     }
 
 
-    player = Entity(int(screen_width / 2), int(screen_height / 2), '@', libtcod.purple)
-    npc = Entity(int(screen_width / 2 - 5), int(screen_height / 2), '@', libtcod.yellow)
+    player = Entity(int(mapconfig['screen_width']/ 2), int(mapconfig['screen_height'] / 2), '@', libtcod.purple)
+    npc = Entity(int(mapconfig['screen_width'] / 2 - 5), int(mapconfig['screen_height'] / 2), '@', libtcod.yellow)
     entities = [npc, player]
 
     libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
 #What create the screen (Width, Height, Nom, Fullscreen)
-    libtcod.console_init_root(screen_width, screen_height, 'Eolandia', False)
+    libtcod.console_init_root(mapconfig['screen_width'], mapconfig['screen_height'], 'Eolandia', False)
 #Console principale?
-    con = libtcod.console_new(screen_width, screen_height)
+    con = libtcod.console_new(mapconfig['screen_width'], mapconfig['screen_height'])
 #Initialise la Game map
-    game_map = GameMap(map_width, map_height)
-    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player)
+    game_map = GameMap(mapconfig['map_width'], mapconfig['map_height'])
+    game_map.make_map(mapconfig['max_rooms'], mapconfig['room_min_size'], mapconfig['room_max_size'], mapconfig['map_width'], mapconfig['map_height'], player)
 
     key = libtcod.Key()
     mouse = libtcod.Mouse()
@@ -45,7 +37,7 @@ def main():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
 #Function that draws entities
-        render_all(con, entities, game_map, screen_width, screen_height, colors)
+        render_all(con, entities, game_map, colors)
         libtcod.console_flush()
 #Clear les entities pour que ça ne laisse pas de traces
         clear_all(con, entities)
