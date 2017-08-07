@@ -5,6 +5,7 @@ from render_function import render_all, clear_all
 from map_objects.game_map import GameMap
 from fov_functions import initialize_fov, recompute_fov
 from game_states import GameStates
+from components.fighter import Fighter
 
 #fonction main Check if the module is ran as main program (name devient main).
 #Si ce fichier est importé d'un autre module, name sera le nom du module
@@ -33,8 +34,8 @@ def main():
         'light_ground': libtcod.Color(200, 180, 50)
     }
 
-
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True)
+    fighter_component = Fighter(hp=30, defense=2, power=5)
+    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, fighter=fighter_component)
     entities = [player]
 
 
@@ -98,10 +99,11 @@ def main():
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
+
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
-                if entity != player:
-                    print('The' + entity.name + ' ponders the meaning of its existence')
+                if entity.ai:
+                    entity.ai.take_turn(player, fov_map, game_map, entities)
 
             game_state = GameStates.PLAYERS_TURN
 
