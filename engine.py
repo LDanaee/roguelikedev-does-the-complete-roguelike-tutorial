@@ -13,18 +13,20 @@ from game_messages import MessageLog, Message
 #Si ce fichier est importé d'un autre module, name sera le nom du module
 def main():
 #Carac de l'écran
-    screen_width = 80
+    screen_width = 120
     screen_height = 50
     map_width = 80
     map_height = 43
 
 #Carac des barres
+
     bar_width = 20
     panel_height = 7
-    panel_y = screen_height - panel_height
+    panel_y = 1
+    panel_width = screen_width - map_width
 #Message box
-    message_x = bar_width + 2
-    message_width = screen_width - bar_width - 2
+    message_x = panel_y
+    message_width = panel_width
     message_height = panel_height - 1
 
 #Minimum de la room
@@ -57,7 +59,7 @@ def main():
 #Console principale?
     con = libtcod.console_new(screen_width, screen_height)
 #Message box
-    panel = libtcod.console_new(screen_width, panel_height)
+    panel = libtcod.console_new(panel_width, panel_height)
 #Initialise la Game map
     game_map = GameMap(map_width, map_height)
     game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room)

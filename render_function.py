@@ -59,7 +59,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     libtcod.console_clear(panel)
 
     # Print the game messages, one line at a time
-    y = 1
+    y = 2
     for message in message_log.messages:
         libtcod.console_set_default_foreground(panel, message.color)
         libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
@@ -70,7 +70,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     libtcod.console_set_default_foreground(panel, libtcod.light_gray)
     libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))
 
-    libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
+    libtcod.console_blit(panel, -81, 1, screen_width, panel_height, 0, 0, panel_y)
 
 
 def clear_all(con, entities):
