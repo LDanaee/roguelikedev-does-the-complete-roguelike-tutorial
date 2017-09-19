@@ -19,11 +19,12 @@ def main():
     map_height = 43
 
 #Carac des barres
-
     bar_width = 20
     panel_height = 7
     panel_y = 1
     panel_width = screen_width - map_width
+    card_panel_height = 7
+    card_panel_y = screen_height - card_panel_height
 #Message box
     message_x = panel_y
     message_width = panel_width
@@ -60,6 +61,9 @@ def main():
     con = libtcod.console_new(screen_width, screen_height)
 #Message box
     panel = libtcod.console_new(panel_width, panel_height)
+#Card box
+    card_panel = libtcod.console_new(map_width, card_panel_height)
+    windows = [con, panel, card_panel]
 #Initialise la Game map
     game_map = GameMap(map_width, map_height)
     game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room)
@@ -81,8 +85,8 @@ def main():
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 #Function that draws entities
-        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width,
-                   screen_height, bar_width, panel_height, panel_y, mouse, colors)
+        render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width,
+                   screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors)
 
         fov_recompute = False
 
