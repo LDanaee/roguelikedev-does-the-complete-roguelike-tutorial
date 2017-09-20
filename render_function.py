@@ -67,8 +67,8 @@ def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_
         libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
         y += 1
     libtcod.console_print_frame(con, 0, 0, 80, 43, False, libtcod.BKGND_SET, 'Map')
-    libtcod.console_print_frame(panel, 0, 0, 40, 7, False, libtcod.BKGND_SET, None)
-    render_bar(panel, 2, 2, bar_width, 'HP', player.fighter.hp,
+    libtcod.console_print_frame(panel, 0, 0, 39, 8, False, libtcod.BKGND_SET, None)
+    render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp,
     player.fighter.max_hp, libtcod.light_red, libtcod.darker_red)
     libtcod.console_set_default_foreground(panel, libtcod.light_gray)
     libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))

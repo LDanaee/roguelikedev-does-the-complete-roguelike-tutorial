@@ -20,7 +20,7 @@ def main():
 
 #Carac des barres
     bar_width = 20
-    panel_height = 7
+    panel_height = 8
     panel_y = 1
     panel_width = screen_width - map_width
     card_panel_height = 7
