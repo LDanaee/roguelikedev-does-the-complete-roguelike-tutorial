@@ -40,6 +40,7 @@ def main():
     fov_radius = 10
 
     max_monsters_per_room = 3
+    cardslots = 6
 
 
     colors = {
@@ -86,7 +87,7 @@ def main():
             recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 #Function that draws entities
         render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width,
-                   screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors)
+                   screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors, cardslots)
 
         fov_recompute = False
 

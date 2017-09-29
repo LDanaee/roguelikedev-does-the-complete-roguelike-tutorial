@@ -29,7 +29,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
     libtcod.console_print_ex(panel, int(x + total_width / 2), y, libtcod.BKGND_NONE, libtcod.CENTER,
                              '{0}: {1}/{2}'.format(name, value, maximum))
 
-def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors):
+def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors, cardslots):
     if fov_recompute:
         # Draw all the tiles in the game map
         for y in range(game_map.height):
@@ -73,6 +73,9 @@ def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_
     libtcod.console_set_default_foreground(panel, libtcod.light_gray)
     libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT, get_names_under_mouse(mouse, entities, fov_map))
     libtcod.console_print_frame(card_panel, 0, 0, 80, 7, False, libtcod.BKGND_SET, 'Cards')
+    for i in range(cardslots) :
+        j = (80//cardslots) - 1
+        libtcod.console_print_frame(card_panel, (i*j) + 1, 1, j, 5, False, libtcod.BKGND_SET, None)
     libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 80, panel_y)
     libtcod.console_blit(card_panel, 0, 0, screen_width, card_panel_height, 0, 0, card_panel_y)
 
