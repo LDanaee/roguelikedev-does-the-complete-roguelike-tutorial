@@ -60,14 +60,9 @@ def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_
     libtcod.console_set_default_background(card_panel, libtcod.black)
     libtcod.console_clear(card_panel)
 
-    # Print the game messages, one line at a time
-    y = 3
-    for message in message_log.messages:
-        libtcod.console_set_default_foreground(panel, message.color)
-        libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
-        y += 1
-    libtcod.console_print_frame(con, 0, 0, 80, 43, False, libtcod.BKGND_SET, 'Map')
-    libtcod.console_print_frame(panel, 0, 0, 39, 8, False, libtcod.BKGND_SET, None)
+
+    libtcod.console_print_frame(con, 0, 0, 80, 43, False, libtcod.BKGND_SET, None)
+    libtcod.console_print_frame(panel, 0, 0, 39, 15, False, libtcod.BKGND_SET, None)
     render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp,
     player.fighter.max_hp, libtcod.light_red, libtcod.darker_red)
     libtcod.console_set_default_foreground(panel, libtcod.light_gray)
@@ -76,6 +71,12 @@ def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_
     for i in range(cardslots) :
         j = (80//cardslots) - 1
         libtcod.console_print_frame(card_panel, (i*j) + 1, 1, j, 5, False, libtcod.BKGND_SET, None)
+        # Print the game messages, one line at a time
+    y = 3
+    for message in message_log.messages:
+        libtcod.console_set_default_foreground(panel, message.color)
+        libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
+        y += 1
     libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 80, panel_y)
     libtcod.console_blit(card_panel, 0, 0, screen_width, card_panel_height, 0, 0, card_panel_y)
 

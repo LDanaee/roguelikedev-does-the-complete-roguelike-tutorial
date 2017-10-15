@@ -8,6 +8,7 @@ from game_states import GameStates
 from components.fighter import Fighter
 from components.death_function import kill_player, kill_monster
 from game_messages import MessageLog, Message
+from components.inventory import Inventory
 
 #fonction main Check if the module is ran as main program (name devient main).
 #Si ce fichier est importé d'un autre module, name sera le nom du module
@@ -20,7 +21,7 @@ def main():
 
 #Carac des barres
     bar_width = 20
-    panel_height = 8
+    panel_height = 15
     panel_y = 1
     panel_width = screen_width - map_width
     card_panel_height = 7
@@ -28,7 +29,7 @@ def main():
 #Message box
     message_x = panel_y
     message_width = panel_width
-    message_height = panel_height - 1
+    message_height = panel_height - 4
 
 #Minimum de la room
     room_max_size = 15
@@ -40,6 +41,7 @@ def main():
     fov_radius = 10
 
     max_monsters_per_room = 3
+    max_items_per_room = 2
     cardslots = 6
 
 
@@ -51,7 +53,8 @@ def main():
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component)
+    inventory_component = Inventory(26)
+    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component, inventory=inventory_component)
     entities = [player]
 
 
@@ -67,7 +70,7 @@ def main():
     windows = [con, panel, card_panel]
 #Initialise la Game map
     game_map = GameMap(map_width, map_height)
-    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room)
+    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room, max_items_per_room)
 
     fov_recompute = True
     fov_map = initialize_fov(game_map)
@@ -100,6 +103,7 @@ def main():
         action = handle_keys(key)
 
         move = action.get('move')
+        pickup = action.get('pickup')
         exiting = action.get('exit')
         fullscreen = action.get('fullscreen')
 
@@ -121,6 +125,15 @@ def main():
                     fov_recompute = True
 
                 game_state = GameStates.ENEMY_TURN
+        elif pickup and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.item and entity.x == player.x and entity.y == player.y:
+                    pickup_results = player.inventory.add_item(entity)
+                    player_turn_results.extend(pickup_results)
+
+                    break
+            else:
+                message_log.add_message(Message('There is nothing here to pick up.', libtcod.yellow))
 
         if exiting:
             return True
@@ -131,6 +144,7 @@ def main():
         for player_turn_result in player_turn_results:
             message = player_turn_result.get('message')
             dead_entity = player_turn_result.get('dead')
+            item_added = player_turn_result.get('item_added')
 
             if message:
                 message_log.add_message(message)
@@ -142,6 +156,11 @@ def main():
                     message = kill_monster(dead_entity)
 
                 message_log.add_message(message)
+
+            if item_added:
+                entities.remove(item_added)
+
+                game_state = GameStates.ENEMY_TURN
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
