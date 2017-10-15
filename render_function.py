@@ -1,5 +1,6 @@
 import libtcodpy as libtcod
 from enum import Enum
+from custom_fontthing import load_customfont
 
 class RenderOrder(Enum):
     CORPSE = 1
@@ -30,6 +31,18 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
                              '{0}: {1}/{2}'.format(name, value, maximum))
 
 def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors, cardslots):
+    load_customfont()
+    wall_tile = 256
+    floor_tile = 257
+    player_tile = 258
+    orc_tile = 259
+    troll_tile = 260
+    scroll_tile = 261
+    healingpotion_tile = 262
+    sword_tile = 263
+    shield_tile = 264
+    stairsdown_tile = 265
+    dagger_tile = 266
     if fov_recompute:
         # Draw all the tiles in the game map
         for y in range(game_map.height):
@@ -38,15 +51,15 @@ def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_
                 wall = game_map.tiles[x][y].block_sight
                 if visible:
                     if wall:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_wall'), libtcod.BKGND_SET)
+                        libtcod.console_put_char_ex(con, x, y, wall_tile, libtcod.white, libtcod.black)
                     else:
-                        libtcod.console_set_char_background(con, x, y, colors.get('light_ground'), libtcod.BKGND_SET)
+                        libtcod.console_put_char_ex(con, x, y, floor_tile, libtcod.white, libtcod.black)
                     game_map.tiles[x][y].explored = True
                 elif game_map.tiles[x][y].explored:
                     if wall:
-                        libtcod.console_set_char_background(con, x, y, colors.get('dark_wall'), libtcod.BKGND_SET)
+                        libtcod.console_put_char_ex(con, x, y, wall_tile, libtcod.grey, libtcod.black)
                     else:#if not draw floor
-                        libtcod.console_set_char_background(con, x, y, colors.get('dark_ground'), libtcod.BKGND_SET)
+                        libtcod.console_put_char_ex(con, x, y, floor_tile, libtcod.grey, libtcod.black)
 
     # Draw all entities in the list
     entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)

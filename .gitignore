@@ -2,5 +2,8 @@ arial10x10.png
 libtcod-gui.dll
 libtcod.dll
 SDL2.dll
+sprites.png
+decfunction_test.py
+testsprite.png
 __pycache__
 libtcodpy

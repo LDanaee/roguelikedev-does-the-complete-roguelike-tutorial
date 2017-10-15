@@ -9,6 +9,7 @@ from components.fighter import Fighter
 from components.death_function import kill_player, kill_monster
 from game_messages import MessageLog, Message
 from components.inventory import Inventory
+from custom_fontthing import load_customfont
 
 #fonction main Check if the module is ran as main program (name devient main).
 #Si ce fichier est importé d'un autre module, name sera le nom du module
@@ -54,11 +55,10 @@ def main():
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
     inventory_component = Inventory(26)
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component, inventory=inventory_component)
+    player = Entity(0, 0, 258, libtcod.white, 'Player', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component, inventory=inventory_component)
     entities = [player]
 
-
-    libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+    libtcod.console_set_custom_font('testsprites.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD, 32, 10)
 #What create the screen (Width, Height, Nom, Fullscreen)
     libtcod.console_init_root(screen_width, screen_height, 'Eolandia', False)
 #Console principale?
