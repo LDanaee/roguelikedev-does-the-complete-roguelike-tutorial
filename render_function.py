@@ -51,13 +51,13 @@ def render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_
                 wall = game_map.tiles[x][y].block_sight
                 if visible:
                     if wall:
-                        libtcod.console_put_char_ex(con, x, y, wall_tile, libtcod.white, libtcod.black)
+                        libtcod.console_put_char_ex(con, x, y, wall_tile, libtcod.purple, libtcod.black)
                     else:
                         libtcod.console_put_char_ex(con, x, y, floor_tile, libtcod.white, libtcod.black)
                     game_map.tiles[x][y].explored = True
                 elif game_map.tiles[x][y].explored:
                     if wall:
-                        libtcod.console_put_char_ex(con, x, y, wall_tile, libtcod.grey, libtcod.black)
+                        libtcod.console_put_char_ex(con, x, y, wall_tile, libtcod.violet, libtcod.black)
                     else:#if not draw floor
                         libtcod.console_put_char_ex(con, x, y, floor_tile, libtcod.grey, libtcod.black)
 
