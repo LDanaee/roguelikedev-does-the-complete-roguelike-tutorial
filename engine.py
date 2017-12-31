@@ -81,6 +81,7 @@ def main():
     mouse = libtcod.Mouse()
 
     game_state = GameStates.PLAYERS_TURN
+    previous_game_state = game_state
 #boucle qui se finit pas
     while not libtcod.console_is_window_closed():
 #Function that capture new event
@@ -90,7 +91,8 @@ def main():
             recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 #Function that draws entities
         render_all(con, panel, card_panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width,
-                   screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors, cardslots)
+                   screen_height, bar_width, panel_height, panel_y, card_panel_height, card_panel_y, mouse, colors,
+                   cardslots, game_state)
 
         fov_recompute = False
 
@@ -100,12 +102,13 @@ def main():
 #Partie pour bouger. Apelle le fichier Handle keys.
 #Return des dictionary.Ces valeurs vont dans la variable action
 #Action contiendras des clés (move, exit, or fullscre)
-        action = handle_keys(key)
+        action = handle_keys(key, game_state)
 
         move = action.get('move')
         pickup = action.get('pickup')
         exiting = action.get('exit')
         fullscreen = action.get('fullscreen')
+        show_inventory = action.get('show_inventory')
 
         player_turn_results = []
 
@@ -135,8 +138,15 @@ def main():
             else:
                 message_log.add_message(Message('There is nothing here to pick up.', libtcod.yellow))
 
+        if show_inventory:
+            previous_game_state = game_state
+            game_state = GameStates.SHOW_INVENTORY
+
         if exiting:
-            return True
+            if game_state == GameStates.SHOW_INVENTORY:
+                game_state = previous_game_state
+            else:
+                return True
 
         if fullscreen:
             libtcod.console_set_fullscreen(not libtcod.console_is_fullscreen())
